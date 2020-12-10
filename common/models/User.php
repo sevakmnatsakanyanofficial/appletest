@@ -3,8 +3,10 @@
 namespace common\models;
 
 use Yii;
+use common\models\queries\UserQuery;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 
@@ -35,7 +37,7 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return '{{%user}}';
     }
@@ -43,21 +45,21 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         return [
-            TimestampBehavior::className(),
+            TimestampBehavior::class,
         ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            [['username', 'auth_key', 'password_hash', 'email', 'created_at', 'updated_at'], 'required'],
-            [['status', 'created_at', 'updated_at'], 'integer'],
+            [['username', 'auth_key', 'password_hash', 'email'], 'required'],
+            [['status'], 'integer'],
             [['username', 'password_hash', 'password_reset_token', 'email', 'verification_token'], 'string', 'max' => 255],
             [['auth_key'], 'string', 'max' => 32],
             [['username'], 'unique'],
@@ -71,7 +73,7 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => Yii::t('app', 'ID'),
@@ -92,7 +94,7 @@ class User extends ActiveRecord implements IdentityInterface
      *
      * @return \yii\db\ActiveQuery|\common\models\queries\AppleQuery
      */
-    public function getApples()
+    public function getApples(): ActiveQuery
     {
         return $this->hasMany(Apple::className(), ['user_id' => 'id']);
     }
@@ -101,9 +103,9 @@ class User extends ActiveRecord implements IdentityInterface
      * {@inheritdoc}
      * @return \common\models\queries\UserQuery the active query used by this AR class.
      */
-    public static function find()
+    public static function find(): UserQuery
     {
-        return new \common\models\queries\UserQuery(get_called_class());
+        return new UserQuery(get_called_class());
     }
 
     /**

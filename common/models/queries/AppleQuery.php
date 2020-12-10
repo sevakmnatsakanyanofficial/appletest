@@ -9,26 +9,12 @@ namespace common\models\queries;
  */
 class AppleQuery extends \yii\db\ActiveQuery
 {
-    /*public function active()
-    {
-        return $this->andWhere('[[status]]=1');
-    }*/
-
     /**
-     * {@inheritdoc}
-     * @return \common\models\Apple[]|array
+     * Condition to choose only not eaten apples
+     * @return AppleQuery
      */
-    public function all($db = null)
+    public function notEaten()
     {
-        return parent::all($db);
-    }
-
-    /**
-     * {@inheritdoc}
-     * @return \common\models\Apple|array|null
-     */
-    public function one($db = null)
-    {
-        return parent::one($db);
+        return $this->andWhere('eat_percent < 100');
     }
 }
