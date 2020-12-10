@@ -3,7 +3,7 @@
 namespace console\controllers;
 
 use common\models\User;
-use yii\web\Controller;
+use yii\console\Controller;
 
 /**
  * Class UserController
